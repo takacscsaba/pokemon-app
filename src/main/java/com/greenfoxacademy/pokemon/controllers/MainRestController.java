@@ -17,6 +17,6 @@ public class MainRestController {
 
   @GetMapping("/pokos")
   public ResponseEntity<?> listOnePoko() {
-    return ResponseEntity.status(HttpStatus.FOUND).body(pokemonRepository.findByPid(4L));
+    return ResponseEntity.status(HttpStatus.FOUND).body(pokemonRepository.findByPid(6L));
   }
 }

@@ -16,11 +16,11 @@
     <!--</select>-->
     <p></p>
     <p class="form-group">
-        <label for="name">Trainer name:</label>
+        <label for="name">New Trainer name:</label>
         <input type="text" required th:field="*{trainer.trainername}" class="form" size="30px" id="name" placeholder="Trainer name"/>
     </p>
     <p class="form-group">
-        <label for="password">Trainer password:</label>
+        <label for="password">New Trainer password:</label>
         <input type="password" required th:field="*{trainer.trainerpassword}" class="form" size="30px" id="password" placeholder="Password">
     </p>
     <p class="checkbox-inline">
@@ -41,6 +41,7 @@
     <p>
         <input type="submit" value="Signup" class="btn btn-success"/>
         <input type="reset" value="Reset" class="btn btn-warning"/>
+        <a href="/loginuser" class="btn btn-default"  role="button" th:action="@{/loginuser}"  method="get">Back to login</a>
     </p>
 </form>
 
