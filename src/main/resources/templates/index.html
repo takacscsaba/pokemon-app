@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <title>Pokemon</title>
+</head>
+<body>
+<a class="btn btn-default" href="login" role="button">Login as another trainer</a>
+<form action="/signout" method="post">
+    <input class="btn btn-danger" type="submit" name="signout" value="Sign out">
+</form>
+<h2 th:text="${trainer.trainername} + ' trainer\'s pokemons'"></h2>
+<table>
+<form action="/addpokemon" method="post">
+    <tr th:if="${trainer.getPokemons().size() < 6}">
+        <td width="300px">
+            <h3>Catch new Pokemon:</h3>
+        </td>
+        <td width="150px">
+            <h3></h3>
+            <select name="pokemonName" class="form-control">
+                <!--<option th:each="pokemon : ${pokemons}" th:if="!${pokemon.getTrainer() != null}"-->
+                <option th:each="pokemon : ${pokemons}"
+                        th:value="${pokemon.getTname()}" th:text="${pokemon.getTname()}">
+                </option>
+            </select>
+        </td>
+        <td>
+            <h3></h3>
+            <input type="submit" value="Catch" class="btn btn-primary">
+        </td>
+    </tr>
+</form>
+</table>
+<table class="table table-hover">
+    <thead>
+    <tr class="text-center">
+        <th>Id</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Picture</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="pokemon : ${pokemonsOfTrainer}">
+        <td>
+            <h3 th:text="${pokemon.getPid()}"></h3>
+        </td>
+        <td>
+            <h3 th:text="${pokemon.getTname()}"></h3>
+        </td>
+        <td>
+            <h3 th:text="${pokemon.getType1()}"></h3>
+            <h3 th:if="${pokemon.getType2()} != 'Nothing'"? th:text="${pokemon.getType2()}"></h3>
+        </td>
+        <td>
+            <img th:src="${pokemon.getPicture()}" height="35%">
+        </td>
+        <td>
+            <form th:action="@{/removepokemon}" method="post">
+                <input type="hidden" name="pokemonId" th:value="${pokemon.getPid()}">
+                <input class="btn btn-danger" type="submit" name="pokemonId" value="Release"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+</html>
