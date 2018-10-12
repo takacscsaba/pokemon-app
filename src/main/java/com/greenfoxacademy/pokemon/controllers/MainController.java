@@ -4,6 +4,7 @@ import com.greenfoxacademy.pokemon.models.Pokemon;
 import com.greenfoxacademy.pokemon.models.Trainer;
 import com.greenfoxacademy.pokemon.repositories.PokemonRepository;
 import com.greenfoxacademy.pokemon.repositories.TrainerRepository;
+import com.greenfoxacademy.pokemon.services.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,19 +15,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController {
-  private PokemonRepository pokemonRepository;
-  private TrainerRepository trainerRepository;
-  private Long loggedInTrainerId;
+  private PokemonService pokemonService;
 
   @Autowired
-  public MainController(PokemonRepository pokemonRepository, TrainerRepository trainerRepository) {
-    this.pokemonRepository = pokemonRepository;
-    this.trainerRepository = trainerRepository;
+  public MainController(PokemonService pokemonService) {
+    this.pokemonService = pokemonService;
   }
 
   @GetMapping("/")
   public String redirecter() {
-    if (loggedInTrainerId == null) {
+    if (pokemonService.isLoggedInTrainerIdNull()) {
       return "redirect:/loginuser";
     } else {
       return "redirect:/index";
@@ -35,13 +33,10 @@ public class MainController {
 
   @GetMapping("/index")
   public String indexPage(Model model) {
-//    pokemonSetter();
-    if (loggedInTrainerId != null) {
-      model.addAttribute("trainer", trainerRepository.findByTrainerid(loggedInTrainerId));
-      model.addAttribute("pokemons", pokemonRepository.findAll());
-
-//      model.addAttribute("pokemonsOfTrainer", pokemonRepository.findByTrainerTrainerid(trainerRepository.findByTrainerid(loggedInTrainerId).getTrainerid()));
-      model.addAttribute("pokemonsOfTrainer", trainerRepository.findByTrainerid(loggedInTrainerId).getPokemons());
+    if (!pokemonService.isLoggedInTrainerIdNull()) {
+      model.addAttribute("trainer", pokemonService.getLoggedInTrainer());
+      model.addAttribute("pokemons", pokemonService.getAllPokemon());
+      model.addAttribute("pokemonsOfTrainer", pokemonService.getAllPokemonOfLoggedInTrainer());
       return "index";
     }
     return "redirect:/loginuser";
@@ -49,71 +44,45 @@ public class MainController {
 
   @GetMapping("/loginuser")
   public String loginPage(Model model) {
-    model.addAttribute("trainer", new Trainer());
+    model.addAttribute("trainer", pokemonService.trainerCreator());
     return "login";
   }
 
   @PostMapping("/loginuser")
   public String loggingIn(@ModelAttribute Trainer trainer) {
-    if (trainerRepository.findByTrainername(trainer.getTrainername()) != null) {
-      trainerRepository.save(trainer);
-      if (trainer.getTrainerpassword().equals(trainerRepository.findFirstByTrainername(trainer.getTrainername()).getTrainerpassword())) {
-        idSaver(trainerRepository.findFirstByTrainername(trainer.getTrainername()));
-        trainerRepository.delete(trainer);
-        return "redirect:/index";
-      }
-      trainerRepository.delete(trainer);
-    }
-    return "redirect:/";
-  }
-
-  public void idSaver(Trainer trainer) {
-    this.loggedInTrainerId = trainer.getTrainerid();
+    return pokemonService.loginAuth(trainer);
   }
 
   @PostMapping("/addpokemon")
   public String addPokemon(@RequestParam(value = "pokemonName") String pokemonName) {
-    Pokemon pokemon = pokemonRepository.findByTname(pokemonName);
-    Trainer trainer = trainerRepository.findByTrainerid(loggedInTrainerId);
-    trainer.getPokemons().add(pokemon);
-//    pokemon.setTrainer(trainer);
-//    pokemonRepository.save(pokemon);
-    trainerRepository.save(trainer);
+    pokemonService.addPokemon(pokemonName);
     return "redirect:/index";
   }
 
   @PostMapping("/removepokemon")
   public String removePokemon(@RequestParam(value = "pokemonId") Long pokemonId) {
-    Pokemon pokemon = pokemonRepository.findByPid(pokemonId);
-    Trainer trainer = trainerRepository.findByTrainerid(loggedInTrainerId);
-    trainer.getPokemons().remove(pokemon);
-//    pokemon.setTrainerNull();
-    pokemonRepository.save(pokemon);
-    trainerRepository.save(trainer);
+    pokemonService.removePokemon(pokemonId);
     return "redirect:/index";
   }
 
   @GetMapping("/register")
-  public String registerPage(@ModelAttribute String warning, Model model) {
-    model.addAttribute("warning", warning);
-    model.addAttribute("trainer", new Trainer());
+  public String registerPage(Model model) {
+    model.addAttribute("trainer", pokemonService.trainerCreator());
     return "register";
   }
 
   @PostMapping("/register")
-  public String registerNewTrainer(@ModelAttribute Trainer trainer,
-                                   Model model) {
-    if (trainerRepository.findByTrainername(trainer.getTrainername()) == null) {
-      trainerRepository.save(trainer);
+  public String registerTrainer(@ModelAttribute Trainer trainer) {
+    if (pokemonService.isTrainerAlreadyExistsByName(trainer)) {
+      pokemonService.trainerSaver(trainer);
       return "redirect:/loginuser";
     }
-    model.addAttribute("warning", "Name already exists!!");
     return "redirect:/register";
   }
 
   @PostMapping("/signout")
   public String signOut() {
-    this.loggedInTrainerId = null;
+    pokemonService.loggedInTrainerIdNuller();
     return "redirect:/";
   }
 }
