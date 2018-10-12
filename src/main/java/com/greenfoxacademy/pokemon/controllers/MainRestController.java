@@ -1,6 +1,6 @@
 package com.greenfoxacademy.pokemon.controllers;
 
-import com.greenfoxacademy.pokemon.models.Pokemon;
+
 import com.greenfoxacademy.pokemon.repositories.PokemonRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
