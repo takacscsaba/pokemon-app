@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class TrainerServiceImpl implements TrainerService, UserDetailsService {
 
   private TrainerRepository trainerRepository;
+  private PokemonService pokemonService;
 
   @Autowired
   public TrainerServiceImpl(TrainerRepository trainerRepository) {
@@ -30,6 +31,7 @@ public class TrainerServiceImpl implements TrainerService, UserDetailsService {
 
   @Override
   public Trainer findByTrainerName(String trainerName) {
+//    pokemonService.idSaver(trainerRepository.findByTrainername(trainerName));
     return trainerRepository.findByTrainername(trainerName);
   }
 }

@@ -11,7 +11,7 @@ import java.util.Set;
 //@Table(name = "trainer")
 public class Trainer {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long trainerid;
 
   @Length(max = 20)
@@ -25,12 +25,12 @@ public class Trainer {
   private List<Pokemon> pokemons;
 
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  @JoinTable(
-      name = "trainer_role",
-      joinColumns = {@JoinColumn(name = "trainer_trainerid")},
-      inverseJoinColumns = {@JoinColumn(name = "role_id")}
-  )
-  private Set<Role> roles = new HashSet<Role>();
+//  @JoinTable(
+//      name = "trainer_role",
+//      joinColumns = {@JoinColumn(name = "trainer_id")},
+//      inverseJoinColumns = {@JoinColumn(name = "role_id")}
+//  )
+  private Set<Role> roles = new HashSet<>();
 
   public Trainer(@Length(max = 20) String trainername, String trainerpassword) {
     this.trainername = trainername;

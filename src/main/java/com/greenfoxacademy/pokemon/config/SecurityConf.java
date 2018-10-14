@@ -32,7 +32,7 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
           .antMatchers(HttpMethod.GET, "/").permitAll()
           .antMatchers("/login").permitAll()
-          .antMatchers("/index").permitAll()
+          .antMatchers("/index").hasRole("USER")
           .antMatchers("/register").permitAll()
           .antMatchers("/pokos").hasRole("USER")
         .and()
