@@ -12,7 +12,7 @@ import java.util.List;
 public class PokemonServiceImpl implements PokemonService {
   private PokemonRepository pokemonRepository;
   private TrainerRepository trainerRepository;
-  private Long loggedInTrainerId;
+  private Long loggedInTrainerId = 0L;
 
   public PokemonServiceImpl(PokemonRepository pokemonRepository, TrainerRepository trainerRepository) {
     this.pokemonRepository = pokemonRepository;
@@ -87,7 +87,7 @@ public class PokemonServiceImpl implements PokemonService {
   }
 
   @Override
-  public boolean isTrainerAlreadyExistsByName(Trainer trainer) {
+  public boolean isTrainerNotExistsByName(Trainer trainer) {
     if (trainerRepository.findByTrainername(trainer.getTrainername()) == null)
       return true;
     else

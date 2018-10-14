@@ -12,12 +12,11 @@ public class Trainer {
   private Long trainerid;
   @Length(max = 20)
   private String trainername;
-  @Length(max = 20)
   private String trainerpassword;
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<Pokemon> pokemons;
 
-  public Trainer(@Length(max = 20) String trainername, @Length(max = 20) String trainerpassword) {
+  public Trainer(@Length(max = 20) String trainername, String trainerpassword) {
     this.trainername = trainername;
     this.trainerpassword = trainerpassword;
   }

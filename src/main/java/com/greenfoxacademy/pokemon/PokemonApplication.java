@@ -8,18 +8,18 @@ import org.apache.catalina.LifecycleState;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
 public class PokemonApplication implements CommandLineRunner {
-  private TrainerRepository trainerRepository;
-  private PokemonRepository pokemonRepository;
 
-  public PokemonApplication(TrainerRepository trainerRepository, PokemonRepository pokemonRepository) {
-    this.trainerRepository = trainerRepository;
-    this.pokemonRepository = pokemonRepository;
+  @Bean
+  public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 
   public static void main(String[] args) {

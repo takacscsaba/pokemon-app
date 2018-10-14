@@ -26,7 +26,7 @@ public interface PokemonService {
 
   void removePokemon(Long pokemonId);
 
-  boolean isTrainerAlreadyExistsByName(Trainer trainer);
+  boolean isTrainerNotExistsByName(Trainer trainer);
 
   void trainerSaver(Trainer trainer);
 
