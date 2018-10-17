@@ -5,6 +5,7 @@ import com.greenfoxacademy.pokemon.services.PokemonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,17 +32,18 @@ public class MainController {
 //    if (pokemonService.isLoggedInTrainerIdNull()) {
 //      return "redirect:/loginuser";
 //    } else {
-      return "redirect:/index";
+    return "redirect:/index";
 //    }
   }
 
   @GetMapping("/index")
-  public String indexPage(Model model) {
+  public String indexPage(Model model, Authentication authentication) {
 //    if (!pokemonService.isLoggedInTrainerIdNull()) {
-      model.addAttribute("trainer", pokemonService.getLoggedInTrainer());
-      model.addAttribute("pokemons", pokemonService.getAllPokemon());
-      model.addAttribute("pokemonsOfTrainer", pokemonService.getAllPokemonOfLoggedInTrainer());
-      return "index";
+//    log.info(authentication.getAuthorities().toString());
+    model.addAttribute("trainer", pokemonService.getLoggedInTrainer());
+    model.addAttribute("pokemons", pokemonService.getAllPokemon());
+    model.addAttribute("pokemonsOfTrainer", pokemonService.getAllPokemonOfLoggedInTrainer());
+    return "index";
 //    }
 //    return "redirect:/login";
   }
@@ -89,9 +91,9 @@ public class MainController {
     return "redirect:/register";
   }
 
-  @PostMapping("/signout")
-  public String signOut() {
-    pokemonService.loggedInTrainerIdNuller();
-    return "redirect:/";
-  }
+//  @PostMapping("/signout")
+//  public String signOut() {
+//    pokemonService.loggedInTrainerIdNuller();
+//    return "redirect:/";
+//  }
 }

@@ -32,6 +32,10 @@ public class Trainer {
 //  )
   private Set<Role> roles = new HashSet<>();
 
+  private String activation;
+
+  private Boolean enabled;
+
   public Trainer(@Length(max = 20) String trainername, String trainerpassword) {
     this.trainername = trainername;
     this.trainerpassword = trainerpassword;
@@ -76,7 +80,29 @@ public class Trainer {
     return roles;
   }
 
+  public void addRoles(String roleName) {
+    if (this.roles == null || this.roles.isEmpty())
+      this.roles = new HashSet<>();
+    this.roles.add(new Role(roleName));
+  }
+
   public void setRoles(Set<Role> roles) {
     this.roles = roles;
+  }
+
+  public void setEnabled(Boolean enabled) {
+    this.enabled = enabled;
+  }
+
+  public Boolean getEnabled() {
+    return enabled;
+  }
+
+  public String getActivation() {
+    return activation;
+  }
+
+  public void setActivation(String activation) {
+    this.activation = activation;
   }
 }

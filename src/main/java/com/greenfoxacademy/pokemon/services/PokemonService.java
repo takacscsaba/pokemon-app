@@ -28,7 +28,7 @@ public interface PokemonService {
 
   boolean isTrainerNotExistsByName(Trainer trainer);
 
-  void trainerSaver(Trainer trainer);
+  String trainerSaver(Trainer trainer);
 
   void loggedInTrainerIdNuller();
 }
