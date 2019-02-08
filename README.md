@@ -22,6 +22,9 @@
     <a href="https://github.com/takacscsaba/typescript-foundation">My repository for TypeScript tasks</a>
   </li>
   <li>
+    <a href="https://github.com/takacscsaba/csharp-foundation">My repository for C# tasks</a>
+  </li>
+  <li>
     <a href="https://github.com/takacscsaba/todo-app-typescript">Command line todoApp written in TypeScript</a>
   </li>
 </ul>
